@@ -23,6 +23,9 @@ body {
     font-family: sans-serif;
     min-height: 100vh;
 }
+.mobile-nav {
+    display: none;
+}
 
 .layout {
     display: flex;
