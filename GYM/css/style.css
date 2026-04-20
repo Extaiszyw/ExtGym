@@ -83,3 +83,21 @@ a {
     scale: calc(1.05);
     transition: 0.5s;
 }
+@media (max-width: 768px) {
+    .logo h1 {
+        font-size: 32px;
+    }
+
+    .bio p {
+        font-size: 14px;
+    }
+
+    .buttons {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .reg, .log {
+        text-align: center;
+    }
+}
