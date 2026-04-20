@@ -28,6 +28,9 @@ body {
     display: flex;
     min-height: 100vh;
 }
+.mobile-nav {
+    display: none;
+}
 
 .sidebar {
     width: 220px;
