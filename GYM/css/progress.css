@@ -1,0 +1,241 @@
+:root {
+    --cyan: #00e5ff;
+    --bg: #0a0a0a;
+    --card-bg: #111111;
+    --border: #1e1e1e;
+    --text: #ffffff;
+    --text-muted: #555555;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg);
+    background-image:
+        linear-gradient(rgba(0, 229, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    color: var(--text);
+    font-family: sans-serif;
+    min-height: 100vh;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 220px;
+    background: var(--card-bg);
+    border-right: 1px solid var(--border);
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    position: fixed;
+    height: 100vh;
+}
+
+.logo {
+    color: var(--cyan);
+    font-size: 22px;
+    letter-spacing: 1px;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text-muted);
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+nav a:hover {
+    color: var(--cyan);
+    background: rgba(0, 229, 255, 0.06);
+}
+
+nav a.active {
+    color: var(--cyan);
+    background: rgba(0, 229, 255, 0.1);
+}
+
+.main {
+    margin-left: 220px;
+    padding: 40px 48px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-bottom: 60px;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.cards {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: border-color 0.2s;
+}
+
+.card:hover {
+    border-color: rgba(0, 229, 255, 0.2);
+}
+
+.card__label {
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.card__value {
+    color: var(--cyan);
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.block {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.block__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.block__title {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+select {
+    background: #161616;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+select:focus {
+    border-color: var(--cyan);
+}
+
+.volume-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    height: 180px;
+}
+
+.bar-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex: 1;
+    height: 100%;
+}
+
+.bar-value {
+    color: var(--text-muted);
+    font-size: 11px;
+}
+
+.bar {
+    background: linear-gradient(180deg, rgba(0,229,255,0.7) 0%, rgba(0,229,255,0.2) 100%);
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+    min-height: 4px;
+    transition: height 0.4s ease;
+}
+
+.bar-label {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.history__item {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.history__item:last-child {
+    border-bottom: none;
+}
+
+.history__date {
+    color: var(--text-muted);
+    font-size: 13px;
+    min-width: 180px;
+    text-transform: capitalize;
+}
+
+.history__exercises {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex: 1;
+}
+
+.history__ex {
+    background: rgba(0, 229, 255, 0.08);
+    border: 1px solid rgba(0, 229, 255, 0.15);
+    color: var(--cyan);
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.history__volume {
+    color: var(--text-muted);
+    font-size: 13px;
+    min-width: 100px;
+    text-align: right;
+}
+
+.empty {
+    color: var(--text-muted);
+    font-size: 14px;
+    padding: 10px 0;
+}

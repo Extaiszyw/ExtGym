@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExtGym — Dashboard</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <aside class="sidebar">
+            <h2 class="logo">ExtGym</h2>
+            <nav>
+                <a href="dashboard.html" class="active">Главная</a>
+                <a href="workout.html">Тренировки</a>
+                <a href="progress.html">Прогресс</a>
+                <a href="plan.html">План</a>
+            </nav>
+            <div class="sidebar__user" id="sidebarUser"></div>
+        </aside>
+
+        <!-- Paywall -->
+        <div class="paywall" id="paywall">
+            <div class="paywall__box">
+                <h2>Оформи подписку</h2>
+                <p>Чтобы использовать ExtGym нужна подписка</p>
+                <button class="btn-pay">Оформить — $5/мес</button>
+                <button class="btn-logout-pay" onclick="logout()">Выйти</button>
+            </div>
+        </div>
+
+        <main class="main" id="mainContent">
+
+            <div class="block">
+                <h2 class="block__title">Сегодня</h2>
+                <div id="todayBlock"></div>
+            </div>
+
+            <div class="cards">
+                <div class="card">
+                    <span class="card__label">Прогресс недели</span>
+                    <div class="progress-bar">
+                        <div class="progress-bar__fill" id="weekProgress"></div>
+                    </div>
+                    <span class="card__value" id="weekProgressText">0%</span>
+                </div>
+                <div class="card">
+                    <span class="card__label">Тренировок всего</span>
+                    <span class="card__value" id="totalWorkouts">0</span>
+                </div>
+                <div class="card">
+                    <span class="card__label">На этой неделе</span>
+                    <span class="card__value" id="weekWorkouts">0 / 0</span>
+                </div>
+            </div>
+
+            <div class="block">
+                <h2 class="block__title">Объём нагрузки по дням</h2>
+                <div class="chart" id="volumeChart"></div>
+            </div>
+
+            <div class="block">
+                <div class="block__header">
+                    <h2 class="block__title">История тренировок</h2>
+                    <button class="btn-clear" onclick="clearHistory()">Очистить историю</button>
+                </div>
+                <div id="recentList"></div>
+            </div>
+
+        </main>
+    </div>
+    <script type="module" src="js/dashboard.js"></script>
+</body>
+
+</html>

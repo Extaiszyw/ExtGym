@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExtGym — План</title>
+    <link rel="stylesheet" href="css/plan.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+        <h2 class="logo">ExtGym</h2>
+        <nav>
+            <a href="dashboard.html">Главная</a>
+            <a href="workout.html">Тренировки</a>
+            <a href="progress.html">Прогресс</a>
+            <a href="plan.html" class="active">План</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+
+        <div class="header">
+            <h1>План тренировок</h1>
+            <button class="btn-save" onclick="savePlan()">Сохранить план</button>
+        </div>
+
+        <div class="days" id="daysList"></div>
+
+    </main>
+</div>
+
+<script type="module" src="js/plan.js"></script>
+</body>
+</html>

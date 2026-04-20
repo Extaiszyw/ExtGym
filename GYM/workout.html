@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExtGym — Тренировка</title>
+    <link rel="stylesheet" href="css/workout.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+        <h2 class="logo">ExtGym</h2>
+        <nav>
+            <a href="dashboard.html">Главная</a>
+            <a href="workout.html" class="active">Тренировки</a>
+            <a href="progress.html">Прогресс</a>
+            <a href="plan.html">План</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+
+        <div class="header">
+            <h1>Тренировка</h1>
+            <span class="date" id="currentDate"></span>
+        </div>
+
+        <div id="exerciseList"></div>
+
+        <button class="btn-add" onclick="addExercise()">
+            + Добавить упражнение
+        </button>
+
+        <div class="summary">
+            <div class="summary__item">
+                <span>Упражнений</span>
+                <span id="totalExercises">0</span>
+            </div>
+            <div class="summary__item">
+                <span>Подходов</span>
+                <span id="totalSets">0</span>
+            </div>
+            <div class="summary__item">
+                <span>Объём</span>
+                <span id="totalVolume">0 кг</span>
+            </div>
+        </div>
+
+        <button class="btn-finish" onclick="finishWorkout()">
+            Завершить тренировку
+        </button>
+
+    </main>
+</div>
+
+<script type="module" src="js/workout.js"></script>
+</body>
+</html>
