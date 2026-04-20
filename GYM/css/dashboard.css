@@ -7,6 +7,11 @@
     --text-muted: #555555;
 }
 
+.mobile-nav {
+    display: none;
+}
+
+
 * {
     margin: 0;
     padding: 0;
