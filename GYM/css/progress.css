@@ -239,3 +239,87 @@ select:focus {
     font-size: 14px;
     padding: 10px 0;
 }
+@media (max-width: 768px) {
+
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        padding: 16px 20px;
+        gap: 0;
+        justify-content: space-between;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    nav {
+        flex-direction: row;
+        gap: 4px;
+    }
+
+    nav a {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 16px;
+    }
+
+    .cards {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    .card__value {
+        font-size: 22px;
+    }
+
+    .block {
+        padding: 16px;
+    }
+
+    .block__header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    select {
+        width: 100%;
+    }
+
+    .history__item {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .history__date {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .history__exercises {
+        width: 100%;
+    }
+
+    .history__volume {
+        min-width: unset;
+    }
+
+    .volume-chart {
+        height: 120px;
+        gap: 8px;
+    }
+}
