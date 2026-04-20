@@ -319,8 +319,10 @@ nav a.active {
     }
 
     /* Нижняя навигация */
+    @media (max-width: 768px) {
     .mobile-nav {
         display: flex;
+        flex-direction: row;
         position: fixed;
         bottom: 0;
         left: 0;
@@ -328,7 +330,7 @@ nav a.active {
         background: #111111;
         border-top: 1px solid #1e1e1e;
         z-index: 99;
-        padding: 8px 0;
+        padding: 8px 0 20px 0;
     }
 
     .mobile-nav a {
@@ -352,6 +354,8 @@ nav a.active {
         width: 22px;
         height: 22px;
     }
+}
+
 
     .main {
         margin-left: 0 !important;
