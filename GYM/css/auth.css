@@ -131,3 +131,9 @@ body {
 .btn-auth:hover {
     opacity: 0.85;
 }
+@media (max-width: 768px) {
+    .auth-box {
+        padding: 32px 24px;
+        margin: 16px;
+    }
+}
