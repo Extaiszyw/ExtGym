@@ -7,11 +7,6 @@
     --text-muted: #555555;
 }
 
-.mobile-nav {
-    display: none;
-}
-
-
 * {
     margin: 0;
     padding: 0;
@@ -34,7 +29,6 @@ body {
     min-height: 100vh;
 }
 
-/* САЙДБАР */
 .sidebar {
     width: 220px;
     background: var(--card-bg);
@@ -78,7 +72,37 @@ nav a.active {
     background: rgba(0, 229, 255, 0.1);
 }
 
-/* MAIN */
+.sidebar__user {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.user-name {
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.btn-logout {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.btn-logout:hover {
+    border-color: #ff4444;
+    color: #ff4444;
+}
+
 .main {
     margin-left: 220px;
     padding: 40px 48px;
@@ -86,9 +110,9 @@ nav a.active {
     display: flex;
     flex-direction: column;
     gap: 28px;
+    padding-bottom: 60px;
 }
 
-/* БЛОК */
 .block {
     background: var(--card-bg);
     border: 1px solid var(--border);
@@ -105,7 +129,12 @@ nav a.active {
     color: var(--text-muted);
 }
 
-/* КАРТОЧКИ */
+.block__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .cards {
     display: flex;
     gap: 20px;
@@ -133,7 +162,6 @@ nav a.active {
     font-weight: 600;
 }
 
-/* ПРОГРЕСС БАР */
 .progress-bar {
     background: var(--border);
     border-radius: 4px;
@@ -148,7 +176,6 @@ nav a.active {
     transition: width 0.6s ease;
 }
 
-/* СЕГОДНЯ */
 .today-exercises {
     display: flex;
     flex-direction: column;
@@ -198,7 +225,6 @@ nav a.active {
     color: var(--cyan);
 }
 
-/* КНОПКА СТАРТ */
 .btn-start {
     background: var(--cyan);
     color: #0a0a0a;
@@ -216,7 +242,6 @@ nav a.active {
     opacity: 0.85;
 }
 
-/* ГРАФИК */
 .chart {
     display: flex;
     align-items: flex-end;
@@ -247,7 +272,6 @@ nav a.active {
     font-size: 12px;
 }
 
-/* ИСТОРИЯ */
 .recent__item {
     display: flex;
     align-items: center;
@@ -273,6 +297,27 @@ nav a.active {
     flex: 1;
 }
 
+.recent__actions {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-left: auto;
+}
+
+.btn-edit {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.3;
+    transition: opacity 0.2s;
+    padding: 4px 8px;
+}
+
+.btn-edit:hover {
+    opacity: 1;
+}
+
 .btn-delete {
     background: none;
     border: none;
@@ -285,20 +330,6 @@ nav a.active {
 
 .btn-delete:hover {
     opacity: 1;
-}
-
-.empty {
-    color: var(--text-muted);
-    font-size: 14px;
-}
-
-.empty a {
-    color: var(--cyan);
-}
-.block__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 
 .btn-clear {
@@ -318,36 +349,15 @@ nav a.active {
     background: rgba(255, 68, 68, 0.08);
 }
 
-.sidebar__user {
-    margin-top: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-}
-
-.user-name {
+.empty {
     color: var(--text-muted);
-    font-size: 13px;
+    font-size: 14px;
 }
 
-.btn-logout {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    padding: 8px;
-    border-radius: 6px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: center;
+.empty a {
+    color: var(--cyan);
 }
 
-.btn-logout:hover {
-    border-color: #ff4444;
-    color: #ff4444;
-}
 .paywall {
     display: none;
     position: fixed;
@@ -415,28 +425,18 @@ nav a.active {
     border-color: #ff4444;
     color: #ff4444;
 }
-/* ===== МОБИЛЬНАЯ АДАПТАЦИЯ ===== */
+
+/* МОБИЛЬНАЯ АДАПТАЦИЯ */
+.mobile-nav {
+    display: none;
+}
+
 @media (max-width: 768px) {
 
-    /* Прячем сайдбар */
     .sidebar {
         display: none;
     }
 
-    /* Нижняя навигация */
-    .mobile-nav {
-        display: flex;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background: #111111;
-        border-top: 1px solid #1e1e1e;
-        z-index: 99;
-        padding: 8px 0;
-    }
-
-    @media (max-width: 768px) {
     .mobile-nav {
         display: flex;
         flex-direction: row;
@@ -471,7 +471,6 @@ nav a.active {
         width: 22px;
         height: 22px;
     }
-}
 
     .main {
         margin-left: 0 !important;
@@ -502,16 +501,6 @@ nav a.active {
         align-items: flex-start;
     }
 
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-
-    .btn-save {
-        width: 100%;
-    }
-
     .paywall {
         left: 0 !important;
         width: 100% !important;
@@ -532,67 +521,7 @@ nav a.active {
         width: 100%;
     }
 
-    .history__item {
-        flex-wrap: wrap;
-        gap: 6px;
-    }
-
-    .history__date {
-        width: 100%;
-        min-width: unset;
-    }
-
-    .history__exercises {
-        width: 100%;
-    }
-
-    .sets-header {
-        grid-template-columns: 30px 1fr 1fr 28px;
-        gap: 8px;
-        font-size: 11px;
-    }
-
-    .set-row {
-        grid-template-columns: 30px 1fr 1fr 28px;
-        gap: 8px;
-    }
-
-    .exercise-card {
-        padding: 16px;
-    }
-
-    .exercise-row {
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .ex-name {
-        width: 100%;
-    }
-
-    .ex-params {
-        width: 100%;
-    }
-
-    .day-card__header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-    }
-
-    .summary {
-        gap: 16px;
-        padding: 16px;
-        flex-wrap: wrap;
-    }
-
-    .volume-chart {
-        height: 120px;
-        gap: 6px;
-    }
-
-    select {
-        width: 100%;
+    .recent__actions {
+        margin-left: 0;
     }
 }
-
