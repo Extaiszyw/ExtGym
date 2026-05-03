@@ -1,6 +1,12 @@
 import { supabase } from './supabase.js'
 
 let exercises = []
+let editWorkoutId = null // если редактируем существующую
+
+function logout() {
+    localStorage.removeItem('currentUser')
+    window.location.href = 'login.html'
+}
 
 window.onload = async () => {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null')
@@ -13,7 +19,38 @@ window.onload = async () => {
         weekday: 'long', day: 'numeric', month: 'long'
     })
 
-    loadFromPlan()
+    // Проверяем редактируем ли существующую тренировку
+    const params = new URLSearchParams(window.location.search)
+    editWorkoutId = params.get('edit')
+
+    if (editWorkoutId) {
+        document.querySelector('.header h1').textContent = 'Редактировать тренировку'
+        document.querySelector('.btn-finish').textContent = 'Сохранить изменения'
+        await loadWorkoutForEdit()
+    } else {
+        loadFromPlan()
+    }
+}
+
+async function loadWorkoutForEdit() {
+    const { data, error } = await supabase
+        .from('workouts')
+        .select('*')
+        .eq('id', editWorkoutId)
+        .single()
+
+    if (error || !data) {
+        console.error(error)
+        loadFromPlan()
+        return
+    }
+
+    exercises = data.exercises.map(ex => ({
+        ...ex,
+        id: ex.id || Date.now() + Math.random()
+    }))
+
+    renderExercises()
 }
 
 function loadFromPlan() {
@@ -164,25 +201,42 @@ async function finishWorkout() {
 
     const currentUser = JSON.parse(localStorage.getItem('currentUser'))
 
-    const { error } = await supabase
-        .from('workouts')
-        .insert([{
-            user_id: currentUser.id,
-            date: new Date().toISOString(),
-            exercises: exercises,
-            volume: totalVolume
-        }])
+    if (editWorkoutId) {
+        // Обновляем существующую
+        const { error } = await supabase
+            .from('workouts')
+            .update({
+                exercises: exercises,
+                volume: totalVolume
+            })
+            .eq('id', editWorkoutId)
 
-    if (error) {
-        alert('Ошибка сохранения!')
-        console.error(error)
-        return
+        if (error) {
+            alert('Ошибка сохранения!')
+            console.error(error)
+            return
+        }
+    } else {
+        // Создаём новую
+        const { error } = await supabase
+            .from('workouts')
+            .insert([{
+                user_id: currentUser.id,
+                date: new Date().toISOString(),
+                exercises: exercises,
+                volume: totalVolume
+            }])
+
+        if (error) {
+            alert('Ошибка сохранения!')
+            console.error(error)
+            return
+        }
     }
 
     window.location.href = 'dashboard.html'
 }
 
-// Глобальные функции
 window.addExercise = addExercise
 window.removeExercise = removeExercise
 window.addSet = addSet
@@ -190,3 +244,4 @@ window.removeSet = removeSet
 window.updateName = updateName
 window.updateSet = updateSet
 window.finishWorkout = finishWorkout
+window.logout = logout
