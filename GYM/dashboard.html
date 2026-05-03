@@ -1,79 +1,77 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ExtGym — Dashboard</title>
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
-
 <body>
 
-    <div class="layout">
+<div class="layout">
 
-        <aside class="sidebar">
-            <h2 class="logo">ExtGym</h2>
-            <nav>
-                <a href="dashboard.html" class="active">Главная</a>
-                <a href="workout.html">Тренировки</a>
-                <a href="progress.html">Прогресс</a>
-                <a href="plan.html">План</a>
-            </nav>
-            <div class="sidebar__user" id="sidebarUser"></div>
-        </aside>
+    <aside class="sidebar">
+        <h2 class="logo">ExtGym</h2>
+        <nav>
+            <a href="dashboard.html" class="active">Главная</a>
+            <a href="workout.html">Тренировки</a>
+            <a href="progress.html">Прогресс</a>
+            <a href="plan.html">План</a>
+            <a href="profile.html">Профиль</a>
+        </nav>
+        <div class="sidebar__user" id="sidebarUser"></div>
+    </aside>
 
-        <!-- Paywall -->
-        <div class="paywall" id="paywall">
-            <div class="paywall__box">
-                <h2>Оформи подписку</h2>
-                <p>Чтобы использовать ExtGym нужна подписка</p>
-                <button class="btn-pay">Оформить — $5/мес</button>
-                <button class="btn-logout-pay" onclick="logout()">Выйти</button>
+    <div class="paywall" id="paywall">
+        <div class="paywall__box">
+            <h2>Оформи подписку</h2>
+            <p>Чтобы использовать ExtGym нужна подписка</p>
+            <button class="btn-pay">Оформить — $5/мес</button>
+            <button class="btn-logout-pay" onclick="logout()">Выйти</button>
+        </div>
+    </div>
+
+    <main class="main" id="mainContent">
+
+        <div class="block">
+            <h2 class="block__title">Сегодня</h2>
+            <div id="todayBlock"></div>
+        </div>
+
+        <div class="cards">
+            <div class="card">
+                <span class="card__label">Прогресс недели</span>
+                <div class="progress-bar">
+                    <div class="progress-bar__fill" id="weekProgress"></div>
+                </div>
+                <span class="card__value" id="weekProgressText">0%</span>
+            </div>
+            <div class="card">
+                <span class="card__label">Тренировок всего</span>
+                <span class="card__value" id="totalWorkouts">0</span>
+            </div>
+            <div class="card">
+                <span class="card__label">На этой неделе</span>
+                <span class="card__value" id="weekWorkouts">0 / 0</span>
             </div>
         </div>
 
-        <main class="main" id="mainContent">
+        <div class="block">
+            <h2 class="block__title">Объём нагрузки по дням</h2>
+            <div class="chart" id="volumeChart"></div>
+        </div>
 
-            <div class="block">
-                <h2 class="block__title">Сегодня</h2>
-                <div id="todayBlock"></div>
+        <div class="block">
+            <div class="block__header">
+                <h2 class="block__title">История тренировок</h2>
+                <button class="btn-clear" onclick="clearHistory()">Очистить историю</button>
             </div>
+            <div id="recentList"></div>
+        </div>
 
-            <div class="cards">
-                <div class="card">
-                    <span class="card__label">Прогресс недели</span>
-                    <div class="progress-bar">
-                        <div class="progress-bar__fill" id="weekProgress"></div>
-                    </div>
-                    <span class="card__value" id="weekProgressText">0%</span>
-                </div>
-                <div class="card">
-                    <span class="card__label">Тренировок всего</span>
-                    <span class="card__value" id="totalWorkouts">0</span>
-                </div>
-                <div class="card">
-                    <span class="card__label">На этой неделе</span>
-                    <span class="card__value" id="weekWorkouts">0 / 0</span>
-                </div>
-            </div>
+    </main>
+</div>
 
-            <div class="block">
-                <h2 class="block__title">Объём нагрузки по дням</h2>
-                <div class="chart" id="volumeChart"></div>
-            </div>
-
-            <div class="block">
-                <div class="block__header">
-                    <h2 class="block__title">История тренировок</h2>
-                    <button class="btn-clear" onclick="clearHistory()">Очистить историю</button>
-                </div>
-                <div id="recentList"></div>
-            </div>
-
-        </main>
-    </div>
-   
 <nav class="mobile-nav">
     <a href="dashboard.html" class="active">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
@@ -84,21 +82,5 @@
         Тренировка
     </a>
     <a href="progress.html">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-        Прогресс
-    </a>
-    <a href="plan.html">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-        План
-    </a>
-    <a href="#" onclick="logout()">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-        Выйти
-    </a>
-</nav>
-
-
-     <script type="module" src="js/dashboard.js"></script>
-</body>
-
-</html>
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19
+      
