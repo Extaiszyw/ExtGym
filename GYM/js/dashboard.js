@@ -5,6 +5,10 @@ function logout() {
     window.location.href = 'login.html'
 }
 
+function editWorkout(id) {
+    window.location.href = `workout.html?edit=${id}`
+}
+
 window.onload = async () => {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null')
     if (!currentUser) {
@@ -30,14 +34,12 @@ window.onload = async () => {
 async function loadDashboard() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'))
 
-    // Загружаем тренировки из Supabase
     const { data: workouts } = await supabase
         .from('workouts')
         .select('*')
         .eq('user_id', currentUser.id)
         .order('date', { ascending: true })
 
-    // Загружаем план из Supabase
     const { data: planData } = await supabase
         .from('plans')
         .select('*')
@@ -46,7 +48,6 @@ async function loadDashboard() {
 
     const plan = planData ? planData.data : null
 
-    // Сохраняем план в localStorage для workout.js
     if (plan) localStorage.setItem('plan', JSON.stringify(plan))
 
     renderToday(plan)
@@ -157,26 +158,28 @@ function renderRecent(workouts) {
                 ${new Date(w.date).toLocaleDateString('ru', { day: 'numeric', month: 'long', weekday: 'short' })}
             </span>
             <span class="recent__info">${w.exercises.length} упр. — ${w.volume} кг</span>
-            <button class="btn-delete" onclick="deleteWorkout('${w.id}')">🗑</button>
+            <div class="recent__actions">
+                <button class="btn-edit" onclick="editWorkout('${w.id}')">✏️</button>
+                <button class="btn-delete" onclick="deleteWorkout('${w.id}')">🗑</button>
+            </div>
         </div>
     `).join('')
 }
 
 async function deleteWorkout(id) {
     if (!confirm('Удалить тренировку?')) return
-
     await supabase.from('workouts').delete().eq('id', id)
     await loadDashboard()
 }
 
 async function clearHistory() {
     if (!confirm('Удалить все тренировки?')) return
-
     const currentUser = JSON.parse(localStorage.getItem('currentUser'))
     await supabase.from('workouts').delete().eq('user_id', currentUser.id)
     await loadDashboard()
 }
 
 window.logout = logout
+window.editWorkout = editWorkout
 window.deleteWorkout = deleteWorkout
 window.clearHistory = clearHistory
