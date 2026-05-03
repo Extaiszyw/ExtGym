@@ -1,250 +1,81 @@
-import { supabase } from './supabase.js'
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExtGym — Тренировка</title>
+    <link rel="stylesheet" href="css/workout.css">
+</head>
+<body>
 
-let exercises = []
-let editWorkoutId = null // если редактируем существующую
+<div class="layout">
 
-function logout() {
-    localStorage.removeItem('currentUser')
-    window.location.href = 'login.html'
-}
+    <aside class="sidebar">
+        <h2 class="logo">ExtGym</h2>
+        <nav>
+            <a href="dashboard.html">Главная</a>
+            <a href="workout.html" class="active">Тренировки</a>
+            <a href="progress.html">Прогресс</a>
+            <a href="plan.html">План</a>
+        </nav>
+    </aside>
 
-window.onload = async () => {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null')
-    if (!currentUser) {
-        window.location.href = 'login.html'
-        return
-    }
+    <main class="main">
 
-    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('ru', {
-        weekday: 'long', day: 'numeric', month: 'long'
-    })
-
-    // Проверяем редактируем ли существующую тренировку
-    const params = new URLSearchParams(window.location.search)
-    editWorkoutId = params.get('edit')
-
-    if (editWorkoutId) {
-        document.querySelector('.header h1').textContent = 'Редактировать тренировку'
-        document.querySelector('.btn-finish').textContent = 'Сохранить изменения'
-        await loadWorkoutForEdit()
-    } else {
-        loadFromPlan()
-    }
-}
-
-async function loadWorkoutForEdit() {
-    const { data, error } = await supabase
-        .from('workouts')
-        .select('*')
-        .eq('id', editWorkoutId)
-        .single()
-
-    if (error || !data) {
-        console.error(error)
-        loadFromPlan()
-        return
-    }
-
-    exercises = data.exercises.map(ex => ({
-        ...ex,
-        id: ex.id || Date.now() + Math.random()
-    }))
-
-    renderExercises()
-}
-
-function loadFromPlan() {
-    const plan = JSON.parse(localStorage.getItem('plan') || 'null')
-
-    if (!plan) {
-        renderExercises()
-        return
-    }
-
-    const todayIndex = new Date().getDay()
-    const planIndex = todayIndex === 0 ? 6 : todayIndex - 1
-    const todayPlan = plan[planIndex]
-
-    if (todayPlan && !todayPlan.rest && todayPlan.exercises.length > 0) {
-        exercises = todayPlan.exercises.map(ex => ({
-            id: Date.now() + Math.random(),
-            name: ex.name,
-            sets: Array.from({ length: parseInt(ex.sets) || 1 }, () => ({
-                reps: ex.reps || '',
-                weight: ''
-            }))
-        }))
-    }
-
-    renderExercises()
-}
-
-function addExercise() {
-    exercises.push({ id: Date.now(), name: '', sets: [{ reps: '', weight: '' }] })
-    renderExercises()
-}
-
-function removeExercise(id) {
-    exercises = exercises.filter(e => e.id !== id)
-    renderExercises()
-}
-
-function addSet(id) {
-    exercises.find(e => e.id === id).sets.push({ reps: '', weight: '' })
-    renderExercises()
-}
-
-function removeSet(id, setIndex) {
-    const ex = exercises.find(e => e.id === id)
-    if (ex.sets.length === 1) return
-    ex.sets.splice(setIndex, 1)
-    renderExercises()
-}
-
-function updateName(id, value) {
-    exercises.find(e => e.id === id).name = value
-    updateSummary()
-}
-
-function updateSet(id, setIndex, field, value) {
-    exercises.find(e => e.id === id).sets[setIndex][field] = value
-    updateSummary()
-}
-
-function renderExercises() {
-    const list = document.getElementById('exerciseList')
-
-    if (exercises.length === 0) {
-        list.innerHTML = `<p class="empty">Нет упражнений — добавь вручную или настрой <a href="plan.html">план</a></p>`
-        updateSummary()
-        return
-    }
-
-    list.innerHTML = exercises.map(ex => `
-        <div class="exercise-card">
-            <div class="exercise-card__header">
-                <input
-                    class="exercise-name"
-                    type="text"
-                    placeholder="Название упражнения"
-                    value="${ex.name}"
-                    oninput="updateName(${ex.id}, this.value)"
-                />
-                <button class="btn-remove" onclick="removeExercise(${ex.id})">✕</button>
-            </div>
-            <div class="sets-header">
-                <span>Подход</span>
-                <span>Повторения</span>
-                <span>Вес (кг)</span>
-                <span></span>
-            </div>
-            ${ex.sets.map((set, i) => `
-                <div class="set-row">
-                    <span class="set-number">${i + 1}</span>
-                    <input
-                        type="number"
-                        placeholder="${set.reps || '8'}"
-                        value="${set.reps}"
-                        oninput="updateSet(${ex.id}, ${i}, 'reps', this.value)"
-                    />
-                    <input
-                        type="number"
-                        placeholder="кг"
-                        value="${set.weight}"
-                        oninput="updateSet(${ex.id}, ${i}, 'weight', this.value)"
-                    />
-                    <button class="btn-remove-set" onclick="removeSet(${ex.id}, ${i})">✕</button>
-                </div>
-            `).join('')}
-            <button class="btn-add-set" onclick="addSet(${ex.id})">
-                + Добавить подход
-            </button>
+        <div class="header">
+            <h1>Тренировка</h1>
+            <span class="date" id="currentDate"></span>
         </div>
-    `).join('')
 
-    updateSummary()
-}
+        <div id="exerciseList"></div>
 
-function updateSummary() {
-    let totalSets = 0
-    let totalVolume = 0
+        <button class="btn-add" onclick="addExercise()">
+            + Добавить упражнение
+        </button>
 
-    exercises.forEach(ex => {
-        totalSets += ex.sets.length
-        ex.sets.forEach(set => {
-            totalVolume += (parseFloat(set.reps) || 0) * (parseFloat(set.weight) || 0)
-        })
-    })
+        <div class="summary">
+            <div class="summary__item">
+                <span>Упражнений</span>
+                <span id="totalExercises">0</span>
+            </div>
+            <div class="summary__item">
+                <span>Подходов</span>
+                <span id="totalSets">0</span>
+            </div>
+            <div class="summary__item">
+                <span>Объём</span>
+                <span id="totalVolume">0 кг</span>
+            </div>
+        </div>
 
-    document.getElementById('totalExercises').textContent = exercises.length
-    document.getElementById('totalSets').textContent = totalSets
-    document.getElementById('totalVolume').textContent = totalVolume + ' кг'
-}
+        <button class="btn-finish" onclick="finishWorkout()">
+            Завершить тренировку
+        </button>
 
-async function finishWorkout() {
-    if (exercises.length === 0) {
-        alert('Добавь хотя бы одно упражнение!')
-        return
-    }
+    </main>
+</div>
+<nav class="mobile-nav">
+    <a href="dashboard.html" >
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Главная
+    </a>
+    <a href="workout.html" class="active" >
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Тренировка
+    </a>
+    <a href="progress.html">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        Прогресс
+    </a>
+    <a href="plan.html">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        План
+    </a>
+    <a href="#" onclick="logout()">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        Выйти
+    </a>
+</nav>
 
-    if (exercises.some(ex => !ex.name.trim())) {
-        alert('Введи название для каждого упражнения!')
-        return
-    }
-
-    let totalVolume = 0
-    exercises.forEach(ex => {
-        ex.sets.forEach(set => {
-            totalVolume += (parseFloat(set.reps) || 0) * (parseFloat(set.weight) || 0)
-        })
-    })
-
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'))
-
-    if (editWorkoutId) {
-        // Обновляем существующую
-        const { error } = await supabase
-            .from('workouts')
-            .update({
-                exercises: exercises,
-                volume: totalVolume
-            })
-            .eq('id', editWorkoutId)
-
-        if (error) {
-            alert('Ошибка сохранения!')
-            console.error(error)
-            return
-        }
-    } else {
-        // Создаём новую
-        const { error } = await supabase
-            .from('workouts')
-            .insert([{
-                user_id: currentUser.id,
-                date: new Date().toISOString(),
-                exercises: exercises,
-                volume: totalVolume
-            }])
-
-        if (error) {
-            alert('Ошибка сохранения!')
-            console.error(error)
-            return
-        }
-    }
-
-    window.location.href = 'dashboard.html'
-}
-
-window.addExercise = addExercise
-window.removeExercise = removeExercise
-window.addSet = addSet
-window.removeSet = removeSet
-window.updateName = updateName
-window.updateSet = updateSet
-window.finishWorkout = finishWorkout
-window.logout = logout
-  
-
-   
+<script type="module" src="js/workout.js"></script>
+</body>
