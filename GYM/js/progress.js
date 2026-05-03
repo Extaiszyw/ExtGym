@@ -1,5 +1,4 @@
 import { supabase } from './supabase.js'
-
 let workouts = []
 
 window.onload = async () => {
